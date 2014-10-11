@@ -1,17 +1,15 @@
-all: xkblayout-state
+all: xkb-display-layout
 
-XKeyboard.o: XKeyboard.cpp XKeyboard.h X11Exception.h
-	g++ -c -Wall -O2 XKeyboard.cpp -o XKeyboard.o
+xkb-display-layout.o: xkb-display-layout.c
+	gcc -std=gnu99 -c -pedantic -Wall -O2 -o $@ $^
 
-wrapper.o: wrapper.cpp XKeyboard.h
-	g++ -c -Wall -O2 wrapper.cpp -o wrapper.o
-
-xkblayout-state: XKeyboard.o wrapper.o
-	g++ XKeyboard.o wrapper.o -lX11 -o xkblayout-state
+xkb-display-layout: xkb-display-layout.o
+	gcc -lX11 -o $@ $^
 
 clean: 
-	rm -f xkblayout-state XKeyboard.o wrapper.o
+	rm -f xkb-display-layout *.o
 
 dist:
-	tar cfa xkblayout-state-v1b.tar.gz Makefile README.md wrapper.cpp X11Exception.h XKeyboard.cpp XKeyboard.h
+	tar cfa xkb-display-layout.tar.gz Makefile COPYING README.md xkb-display-layout.c
+
 
